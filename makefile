@@ -1,23 +1,42 @@
-cc = gcc -Wall
-FILES = obj/main.o obj/function.o obj/graphics.o obj/save.o#liste des fichiers sources avec .o
+# Variables de base pour la compilation
+CC = gcc
+CFLAGS = -Wall
+SRC_DIR = src
+OBJ_DIR = obj
+SOURCES = $(wildcard $(SRC_DIR)/*.c)
+OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
+EXEC = 2048
+
+# Configuration des bibliothèques et de la commande de nettoyage selon l'OS
 ifeq ($(OS), Windows_NT)
-	OPT = -lm -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image
-	COM = del obj\*.o
+	LIBS = -lm -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image
+	CLEANUP = del $(subst /,\,$(OBJECTS))
 else
-	OPT = `pkg-config --libs --cflags sdl2 SDL2_ttf`
-	COM = rm obj/*.o
+	LIBS = $(shell pkg-config --libs --cflags sdl2 SDL2_ttf SDL2_image)
+	CLEANUP = rm -f $(OBJECTS)
 endif
 
-all: 2048 #commande pour compiler et lancer le jeu
+# Cibles phony pour éviter des conflits de noms
+.PHONY: all clean
+
+# Cible principale pour la compilation
+all: $(EXEC)
+	@echo "Compilation complete!"
+
+# Cible pour exécuter l'exécutable
+run: all
+	./$(EXEC)
 	make clean
-	./2048
 
-2048: $(FILES) #commande pour compiler le jeu
-	$(cc) $^ -o $@ $(OPT)
+# Lier les fichiers objets pour créer l'exécutable
+$(EXEC): $(OBJECTS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
-obj/%o: src/%c #commande de création des .o avec les .c
-	$(cc) -c $^ -o $@ $(OPT)
+# Compiler les fichiers source en fichiers objets
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@ $(LIBS)
 
-
-clean: #commande pour retirer tous les fichiers objects
-	$(COM)
+# Nettoyer les fichiers objets
+clean:
+	$(CLEANUP)

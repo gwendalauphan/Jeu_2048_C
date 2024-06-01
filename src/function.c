@@ -24,7 +24,7 @@ peuvent. Et une seconde partie qui permet de déplacer toutes les cases vers la
 droite.*/
 int moveRight(int gridSize, int grid[gridSize][gridSize], int writable) {
   int cx, nb_evo = 0, z = 1, nb_changes = 0;
-  for (int j = 0; j < gridSize; j++)
+  for (int j = 0; j < gridSize; j++) {
     for (int i = gridSize - 1; i >= 0;
          i--) {  // On commence bien le "for" par la droite vers la gauche
       z = 1;  // L'algorithme part de l'extrême droite et regarde à la case de

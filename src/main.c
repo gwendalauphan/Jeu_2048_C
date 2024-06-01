@@ -75,73 +75,79 @@ Start:;
   int activated = 0;
   SDL_Event event;
 
-  while (continuer) {  // Début de la boucle
+  while (continuer) {
     SDL_PollEvent(&event);
-    switch (event.type) {  // Gestion des touches
+    switch (event.type) {
       case SDL_QUIT:
-        continuer = 0;
-        break;
+          continuer = 0;
+          break;
       case SDL_KEYDOWN:
-        canclick = 1;
-        break;
+          canclick = 1;
+          break;
       case SDL_KEYUP:
         if (canclick == 1) {
+
+          int two_players_mode = (nb_players == 2) && (Game_mode_multi == 0);
+
           // commandes joueur 1
           alowed = (Game_mode_3 == 0)
                        ? (playerTurn == 0)
                        : 1 && canPlay[0];  // si on est mode chacun son tour, on
                                            // regarde si c'est à nous, alors
                                            // alowed = 1
-          if (event.key.keysym.sym == SDLK_RIGHT &&
-              alowed) {  // sinon on est mode simultané et alowed = 1 par défaut
-            Save(nb_players, gridSize, Game_mode_3, grid[0], 0);
-            activated = 1;
-            result = moveRight(gridSize, grid[0], 1);
-          } else if (event.key.keysym.sym == SDLK_DOWN && alowed) {
-            Save(nb_players, gridSize, Game_mode_3, grid[0], 0);
-            activated = 1;
-            result = moveDown(gridSize, grid[0], 1);
-          } else if (event.key.keysym.sym == SDLK_LEFT && alowed) {
-            Save(nb_players, gridSize, Game_mode_3, grid[0], 0);
-            activated = 1;
-            result = moveLeft(gridSize, grid[0], 1);
-          } else if (event.key.keysym.sym == SDLK_UP && alowed) {
-            Save(nb_players, gridSize, Game_mode_3, grid[0], 0);
-            activated = 1;
-            result = moveUp(gridSize, grid[0], 1);
-          }
+          SDL_Keycode key_down = two_players_mode ? SDLK_s : SDLK_DOWN;
+          SDL_Keycode key_right = two_players_mode ? SDLK_d : SDLK_RIGHT;
+          SDL_Keycode key_left = two_players_mode ? SDLK_q : SDLK_LEFT;
+          SDL_Keycode key_up = two_players_mode ? SDLK_z : SDLK_UP;
 
-          // Chaque fonction de déplacement renvoie result, si il y a eu
-          // déplacement ou fusion, result = 1
-          if (result) {
-            randomPicker(gridSize, grid[0]);  // On crée une nouvelle case
-            result = 0;
-          }
-
-          // commandes joueur 2
-          alowed =
-              (Game_mode_3 == 0) ? (playerTurn == 1) : 1 && canPlay[1] == 1;
-          if (event.key.keysym.sym == SDLK_d && alowed) {
-            Save(nb_players, gridSize, Game_mode_3, grid[1], 1);
-            activated = 1;
-            result = moveRight(gridSize, grid[1], 1);
-          } else if (event.key.keysym.sym == SDLK_s && alowed) {
-            Save(nb_players, gridSize, Game_mode_3, grid[1], 1);
-            activated = 1;
-            result = moveDown(gridSize, grid[1], 1);
-          } else if (event.key.keysym.sym == SDLK_q && alowed) {
-            Save(nb_players, gridSize, Game_mode_3, grid[1], 1);
-            activated = 1;
-            result = moveLeft(gridSize, grid[1], 1);
-          } else if (event.key.keysym.sym == SDLK_z && alowed) {
-            Save(nb_players, gridSize, Game_mode_3, grid[1], 1);
-            activated = 1;
-            result = moveUp(gridSize, grid[1], 1);
+          if (event.key.keysym.sym == key_right && alowed) {
+              Save(nb_players, gridSize, Game_mode_3, grid[0], 0);
+              activated = 1;
+              result = moveRight(gridSize, grid[0], 1);
+          } else if (event.key.keysym.sym == key_down && alowed) {
+              Save(nb_players, gridSize, Game_mode_3, grid[0], 0);
+              activated = 1;
+              result = moveDown(gridSize, grid[0], 1);
+          } else if (event.key.keysym.sym == key_left && alowed) {
+              Save(nb_players, gridSize, Game_mode_3, grid[0], 0);
+              activated = 1;
+              result = moveLeft(gridSize, grid[0], 1);
+          } else if (event.key.keysym.sym == key_up && alowed) {
+              Save(nb_players, gridSize, Game_mode_3, grid[0], 0);
+              activated = 1;
+              result = moveUp(gridSize, grid[0], 1);
           }
 
           if (result) {
-            randomPicker(gridSize, grid[1]);
-            result = 0;
+              randomPicker(gridSize, grid[0]);
+              result = 0;
+          }
+
+          // Commandes joueur 2, si présent
+          if (nb_players == 2) {
+              alowed = (Game_mode_3 == 0) ? (playerTurn == 1) : 1 && canPlay[1];
+              if (event.key.keysym.sym == SDLK_RIGHT && alowed) {
+                  Save(nb_players, gridSize, Game_mode_3, grid[1], 1);
+                  activated = 1;
+                  result = moveRight(gridSize, grid[1], 1);
+              } else if (event.key.keysym.sym == SDLK_DOWN && alowed) {
+                  Save(nb_players, gridSize, Game_mode_3, grid[1], 1);
+                  activated = 1;
+                  result = moveDown(gridSize, grid[1], 1);
+              } else if (event.key.keysym.sym == SDLK_LEFT && alowed) {
+                  Save(nb_players, gridSize, Game_mode_3, grid[1], 1);
+                  activated = 1;
+                  result = moveLeft(gridSize, grid[1], 1);
+              } else if (event.key.keysym.sym == SDLK_UP && alowed) {
+                  Save(nb_players, gridSize, Game_mode_3, grid[1], 1);
+                  activated = 1;
+                  result = moveUp(gridSize, grid[1], 1);
+              }
+
+              if (result) {
+                  randomPicker(gridSize, grid[1]);
+                  result = 0;
+              }
           }
 
           if (Game_mode_3 == 0 && activated == 1) {

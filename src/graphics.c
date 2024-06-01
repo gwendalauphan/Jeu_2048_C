@@ -145,7 +145,7 @@ void printGrid(SDL_Renderer *renderer, int Height, int gridSize,
 int nb_players_Message() {
   // affichage nb_joueurs
   SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,
-                           "Règles du jeu de traverse", rules, NULL);
+                           "Règles du jeu du 2048", rules, NULL);
   // data des boutons
   const SDL_MessageBoxButtonData buttons[] = {
       {0, 1, "Solo"},
@@ -215,8 +215,8 @@ int Game_mode_3_Message(int Game_mode, int Game_mode_multi) {
   const SDL_MessageBoxData messageboxdata = {
       SDL_MESSAGEBOX_INFORMATION,  // .flags
       NULL,                        // .window
-      "Bite",                      // .title
-      "essai",                     // .message
+      "Mode de jeu",                      // .title
+      "Partie libre ou temps limité",                     // .message
       3 - x,
       buttons,      // .buttons
       &colorScheme  // .colorScheme
