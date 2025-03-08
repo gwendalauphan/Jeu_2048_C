@@ -102,3 +102,6 @@ En plus du mode solo classique, les joueurs peuvent choisir de jouer contre l'or
 ![Grille de jeu en 8x8](docs/grille_8x8.png)
 
 ![Mode de jeu en duel](docs/grille_duel.png)
+
+# Repos source
+Base: https://github.com/gwendalauphan/Jeu_2048_C.git
