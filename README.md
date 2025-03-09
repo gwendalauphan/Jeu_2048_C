@@ -2,7 +2,11 @@
 
 Ce dépôt contient le jeu 2048, un jeu de puzzle où vous combinez des tuiles numérotées pour atteindre le chiffre 2048. Il est jouable en solo ou en multijoueur avec diverses options de jeu.
 
-## Prérequis
+---
+
+# Pour lancer le jeu
+
+## Exécution en local
 
 ### Installer GCC
 
@@ -30,20 +34,20 @@ sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 #### Sous Windows
 Installez les bibliothèques SDL2 en téléchargeant les fichiers de développement depuis les sites officiels et en configurant les chemins dans votre IDE ou environnement de développement.
 
-## Compilation
+### Compilation
 
 Pour compiler le jeu, ouvrez un terminal ou une invite de commande dans le dossier du projet et tapez :
 ```bash
 make all
 ```
 
-## Utilisation
+### Utilisation
 
 Lancez le jeu avec l'exécutable généré (`./2048` sous Linux ou double-cliquez sur `2048.exe` sous Windows). Au lancement, sélectionnez le mode de jeu désiré.
 
+---
 
-
-## Avec Docker
+## Exécution avec Docker
 
 #### Prérequis
 
@@ -72,7 +76,7 @@ docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --devic
 Révoquer l'accès X11 après utilisation :
 ```bash
 xhost -local:docker
-``` 
+```
 
 
 ### Modes de jeu
@@ -87,7 +91,7 @@ En mode solo, les joueurs ont le choix entre deux tailles de grille :
 - **8x8** : Une taille plus grande pour une partie plus complexe et de plus longue durée.
 
 ### Mode avec l'Ordinateur
-En plus du mode solo classique, les joueurs peuvent choisir de jouer contre l'ordinateur.   
+En plus du mode solo classique, les joueurs peuvent choisir de jouer contre l'ordinateur.
 
 ### Commandes
 
